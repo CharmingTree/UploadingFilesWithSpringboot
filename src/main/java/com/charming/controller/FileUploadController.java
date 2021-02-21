@@ -36,6 +36,12 @@ public class FileUploadController {
 		this.storageService = storageService;
 	}
 	
+	@GetMapping("/home")
+	public String homeMenu() {
+		
+		return "home";
+	}
+	
 	@GetMapping("/")
 	public String listUploadedFiles(Model model, @CookieValue(value="testCookie", required = false) Cookie testCookie) throws IOException {
 		model.addAttribute("files", storageService.loadAll().map(path -> 
