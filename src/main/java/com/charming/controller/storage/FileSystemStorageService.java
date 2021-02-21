@@ -24,6 +24,14 @@ public class FileSystemStorageService implements StorageService {
 	@Autowired
 	public FileSystemStorageService(StorageProperties properties) {
 		this.rootLocation = Paths.get(properties.getLocation());
+		/*
+		System.out.println("============== rootLocation ==============");
+		System.out.println("FileName : "+ this.rootLocation.getFileName().toString());
+		System.out.println("FileSystem : "+ this.rootLocation.getFileSystem().toString());
+		System.out.println("Root : "+ this.rootLocation.getRoot().toString());
+		System.out.println("Parent : "+ this.rootLocation.getParent().toString());
+		System.out.println("==========================================");
+		*/
 	}
 
 	@Override
@@ -31,6 +39,16 @@ public class FileSystemStorageService implements StorageService {
 		System.out.println("init");
 		try {
 			Files.createDirectories(rootLocation);
+			
+			
+			System.out.println("============== rootLocation ==============");
+			System.out.println("FileName : "+ this.rootLocation.getFileName().toString());
+			System.out.println("FileSystem : "+ this.rootLocation.getFileSystem().toString());
+			System.out.println("AbsolutePath : "+ this.rootLocation.toAbsolutePath().getFileName());
+			for (int i = 0; i < this.rootLocation.getNameCount(); i++) {
+				System.out.println(String.format("[%d] : %s" , i, this.rootLocation.getName(i).getFileName().toString()));
+			}
+			System.out.println("==========================================");
 		}
 		catch (IOException e) {
 			throw new StorageException("Could not initialize storage", e);
@@ -45,6 +63,10 @@ public class FileSystemStorageService implements StorageService {
 			if (file.isEmpty()) {
 				throw new StorageException("Failed to store empty file.");
 			}
+			
+			System.out.println("ContentType : "+file.getContentType());
+			System.out.println("Name : "+file.getName());
+			System.out.println("OriginalFileName : " + file.getOriginalFilename());
 			
 			Path destinationFile = this.rootLocation.resolve(Paths.get(file.getOriginalFilename()))
 																			.normalize().toAbsolutePath();
